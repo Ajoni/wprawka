@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Common.BorrowedBooks.BorrowedBooksHistoryViewModel>
+
+<h4>History of borrowed books</h4>
+
+<table class="table">
+    <tr>
+        <th>@Html.DisplayNameFor(x => x.First().FromDate)</th>
+        <th>@Html.DisplayNameFor(x => x.First().ToDate)</th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Genre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Author)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().ReleaseDate)
+        </th>
+        <th>@Html.DisplayNameFor(model => model.First().ISBN)</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.FromDate)</td>
+            <td>@Html.DisplayFor(modelItem => item.ToDate)</td>
+            <td>@Html.DisplayFor(modelItem => item.Genre)</td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReleaseDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ISBN)
+            </td>
+        </tr>
+    }
+
+</table>
