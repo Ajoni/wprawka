@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Common;
-using Common.BorrowedBooks;
 using Common.UserViewModels;
+using Common.UserViewModels.BorrowedBooks;
 using DAL;
 using DAL.Entities;
 

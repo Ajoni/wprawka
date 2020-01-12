@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using Common.BorrowedBooks;
+using Common.UserViewModels.BorrowedBooks;
 using DAL.Entities;
 
 namespace Common.UserViewModels

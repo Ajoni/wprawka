@@ -34,9 +34,6 @@
     <Reference Include="AutoMapper, Version=9.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.9.0.0\lib\net461\AutoMapper.dll</HintPath>
     </Reference>
-    <Reference Include="AutoMapper.Contrib.Autofac.DependencyInjection, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.Contrib.Autofac.DependencyInjection.2.0.1\lib\netstandard2.0\AutoMapper.Contrib.Autofac.DependencyInjection.dll</HintPath>
-    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -54,8 +51,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BorrowedBooks\BorrowedBooksHistoryViewModel.cs" />
-    <Compile Include="BorrowedBooks\BorrowedBooksViewModel.cs" />
+    <Compile Include="BookViewModels\BookDetailsViewModel.cs" />
+    <Compile Include="BookViewModels\BookViewModel.cs" />
+    <Compile Include="BookViewModels\BorrowedBooks\BorrowedBooksHistoryViewModel.cs" />
+    <Compile Include="BookViewModels\BorrowedBooks\BorrowedBooksViewModel.cs" />
+    <Compile Include="BookViewModels\DictBookGenreViewModel.cs" />
+    <Compile Include="UserViewModels\BorrowedBooks\BorrowedBooksHistoryViewModel.cs" />
+    <Compile Include="UserViewModels\BorrowedBooks\BorrowedBooksViewModel.cs" />
     <Compile Include="UserViewModels\ConfirmDeleteUserViewModel.cs" />
     <Compile Include="UserViewModels\UserCreateUpdateViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
