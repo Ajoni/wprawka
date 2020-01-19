@@ -13,6 +13,7 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using Autofac.Integration.WebApi;
 using Common.BookViewModels;
+using Common.BorrowViewModels;
 
 namespace Web
 {
@@ -54,19 +55,39 @@ namespace Web
                 cfg.CreateMap<User, UserCreateUpdateViewModel>().ReverseMap();
                 cfg.CreateMap<User, UserIndexViewModel>()
                     .ForMember(vm => vm.BooksBorrowed,
-                        o => o.MapFrom(u => u.BorrowedBooks.Count(b => !b.IsReturned) != 0))
+                        o => o.MapFrom(u => u.BorrowedBooks.Count(b => !b.IsReturned)))
                     .ForMember(vm => vm.UserName,
-                        o => o.MapFrom(u => $"{u.FirstName} {u.LastName}"));
+                        o => o.MapFrom(u => u.FirstName + " " + u.LastName));
                 cfg.CreateMap<User, UserDetailsViewModel>()
                     .ForMember(vm => vm.BorrowedBooksViewModel, o => o.Ignore())
                     .ForMember(vm => vm.BorrowedBooksHistoryViewModel, o => o.Ignore());
                 cfg.CreateMap<User, UserDeleteViewModel>()
                     .ForMember(vm => vm.HasBooks,
                         o => o.MapFrom(u => u.BorrowedBooks.Count(b => !b.IsReturned) != 0));
+
                 cfg.CreateMap<Book, BookViewModel>().ReverseMap()
                     .ForMember(b => b.BookGenre, o => o.Ignore())
                     ;
                 cfg.CreateMap<DictBookGenre, DictBookGenreViewModel>().ReverseMap();
+
+                cfg.CreateMap<Borrow, BorrowedBookViewModel>()
+                    .ForMember(vm => vm.Author, o => o.MapFrom(b => b.Book.Author))
+                    .ForMember(vm => vm.Title, o => o.MapFrom(b => b.Book.Title))
+                    .ForMember(vm => vm.UserName, o => o.MapFrom(b => b.User.FirstName + " " + b.User.LastName))
+                    .ForMember(vm => vm.Email, o => o.MapFrom(b => b.User.Email))
+                    .ForMember(vm => vm.Phone, o => o.MapFrom(b => b.User.Phone));
+                cfg.CreateMap<User, BorrowerViewModel>()
+                    .ForMember(vm => vm.UserName, o => o.MapFrom(u => u.FirstName + " " + u.LastName))
+                    .ForMember(vm => vm.Email, o => o.MapFrom(u => u.Email))
+                    .ForMember(vm => vm.Phone, o => o.MapFrom(u => u.Phone))
+                    .ForMember(vm => vm.AmountBorrowed, o => o.MapFrom(u => u.BorrowedBooks.Count(b => !b.IsReturned)));
+                cfg.CreateMap<Borrow, BorrowViewModel>()
+                    .ForMember(vm => vm.Author, o => o.MapFrom(u => u.Book.Author))
+                    .ForMember(vm => vm.Title, o => o.MapFrom(u => u.Book.Title))
+                    .ForMember(vm => vm.Genre, o => o.MapFrom(u => u.Book.BookGenre.Name));
+                cfg.CreateMap<Book, AvailableBookViewModel>();
+                cfg.CreateMap<User, BorrowUserViewModel>()
+                    .ForMember(vm => vm.UserName, o => o.MapFrom(u => u.FirstName + " " + u.LastName));
             });
 
             return config.CreateMapper();

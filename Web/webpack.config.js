@@ -3,17 +3,18 @@
 var path = require("path");
 var WebpackNotifierPlugin = require("webpack-notifier");
 var BrowserSyncPlugin = require("browser-sync-webpack-plugin");
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 
 module.exports = {
     entry: {
         indexBook: "./react/src/Book/index.js"
+        ,indexBorrow: "./react/src/Borrow/index.js"
     },
     output: {
         path: path.resolve(__dirname, "./Static"),
         filename: "[name].js",
         chunkFilename: '[name].js',
-        //publicPath: path.resolve(__dirname, "./Static/")+"/"
         publicPath: "../Static/"
     },
     module: {
@@ -25,7 +26,6 @@ module.exports = {
             }
         ]
     },
-    //stats: 'errors-warnings',
     devtool: "inline-source-map",
-    plugins: [new WebpackNotifierPlugin(), new BrowserSyncPlugin()]
+    plugins: [new WebpackNotifierPlugin(), new BrowserSyncPlugin(), new CleanWebpackPlugin()]
 }

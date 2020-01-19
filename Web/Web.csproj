@@ -164,6 +164,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\BooksController.cs" />
+    <Compile Include="Controllers\BorrowController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Extensions\HtmlExtensions.cs" />
@@ -188,10 +189,25 @@
     <Content Include="react\src\Book\components\BorrowRow.js" />
     <Content Include="react\src\Book\components\BorrowsHistoryTable.js" />
     <Content Include="react\src\Book\components\BorrowsTable.js" />
+    <Content Include="react\src\Book\components\Breadcrumb.js" />
     <Content Include="react\src\Book\components\DateField.js" />
     <Content Include="react\src\Book\components\InputField.js" />
     <Content Include="react\src\Book\components\MySelect.js" />
-    <Content Include="react\src\Book\components\Breadcrumb.js" />
+    <Content Include="react\src\Book\services\BaseService.js" />
+    <Content Include="react\src\Shared\components\Inputs\DateField.js" />
+    <Content Include="react\src\Shared\components\Inputs\InputField.js" />
+    <Content Include="react\src\Shared\components\Inputs\SelectField.js" />
+    <Content Include="react\src\Borrow\components\BorrowDialog.js" />
+    <Content Include="react\src\Borrow\components\BorrowerDetailsRow.js" />
+    <Content Include="react\src\Borrow\components\BorrowerRow.js" />
+    <Content Include="react\src\Borrow\components\BorrowedBookRow.js" />
+    <Content Include="react\src\Borrow\components\BorrowerDetails.js" />
+    <Content Include="react\src\Borrow\components\BorrowersTable.js" />
+    <Content Include="react\src\Borrow\components\BorrowedBooksTable.js" />
+    <Content Include="react\src\Borrow\components\Borrows.js" />
+    <Content Include="react\src\Borrow\services\BorrowService.js" />
+    <Content Include="react\src\Shared\components\Breadcrumb.js" />
+    <Content Include="react\src\Borrow\index.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include=".babelrc" />
@@ -212,7 +228,7 @@
     <Content Include="react\src\Book\components\Books.js" />
     <Content Include="react\src\Book\components\BooksTable.js" />
     <Content Include="react\src\Book\index.js" />
-    <Content Include="react\src\Book\services\BaseService.js" />
+    <Content Include="react\src\Shared\services\BaseService.js" />
     <Content Include="react\src\Book\services\BookService.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -237,6 +253,7 @@
     <Content Include="Views\Shared\BorrowedBooksHistory.cshtml" />
     <Content Include="Views\Shared\BorrowedBooks.cshtml" />
     <Content Include="Views\Home\Books.cshtml" />
+    <Content Include="Views\Home\Borrow.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

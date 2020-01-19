@@ -25,5 +25,10 @@ namespace Web.Controllers
         {
             return View();
         }
+
+        public ActionResult Borrow()
+        {
+            return View();
+        }
     }
 }
