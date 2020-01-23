@@ -1,4 +1,5 @@
-﻿using Autofac;
+﻿using System;
+using Autofac;
 using Autofac.Integration.Mvc;
 using AutoMapper;
 using Common.UserViewModels;
@@ -14,6 +15,7 @@ using System.Web.Routing;
 using Autofac.Integration.WebApi;
 using Common.BookViewModels;
 using Common.BorrowViewModels;
+using Common.ReportsViewModels;
 
 namespace Web
 {
@@ -88,7 +90,24 @@ namespace Web
                 cfg.CreateMap<Book, AvailableBookViewModel>();
                 cfg.CreateMap<User, BorrowUserViewModel>()
                     .ForMember(vm => vm.UserName, o => o.MapFrom(u => u.FirstName + " " + u.LastName));
+
+                cfg.CreateMap<Book, BookReportViewModel>()
+                    .ForMember(vm => vm.BorrowCount, o => o.Ignore())
+                    .ForMember(vm => vm.BookGenre, o => o.MapFrom(x => x.BookGenre.Name))
+                    .ForMember(vm => vm.BookGenreId, o => o.MapFrom(x => x.BookGenre.BookGenreId));
+                cfg.CreateMap<Tuple<int, Book>, BookReportViewModel>()
+                    .IncludeMembers(x => x.Item2)
+                    .ForMember(vm => vm.BorrowCount, o => o.MapFrom(x => x.Item1))
+                    .ForMember(vm => vm.BookGenre, o => o.MapFrom(x => x.Item2.BookGenre.Name))
+                    .ForMember(vm => vm.BookGenreId, o => o.MapFrom(x => x.Item2.BookGenre.BookGenreId));
+                cfg.CreateMap<User, UserReportViewModel>()
+                    .ForMember(vm => vm.BorrowCount, o => o.Ignore());
+                cfg.CreateMap<Tuple<int, User>, UserReportViewModel>()
+                    .IncludeMembers(x => x.Item2)
+                    .ForMember(vm => vm.BorrowCount, o => o.MapFrom(x => x.Item1));
             });
+
+            config.AssertConfigurationIsValid();
 
             return config.CreateMapper();
         }

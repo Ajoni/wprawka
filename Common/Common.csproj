@@ -64,6 +64,13 @@
     <Compile Include="BorrowViewModels\BorrowViewModel.cs" />
     <Compile Include="BorrowViewModels\ReturnBookViewModel.cs" />
     <Compile Include="BorrowViewModels\BorrowUserViewModel.cs" />
+    <Compile Include="ReportsViewModels\BookReportsViewModel.cs" />
+    <Compile Include="ReportsViewModels\BookReportViewModel.cs" />
+    <Compile Include="ReportsViewModels\InitialDataViewModel.cs" />
+    <Compile Include="ReportsViewModels\Requests\GetTopBooks.cs" />
+    <Compile Include="ReportsViewModels\Requests\GetTopUsers.cs" />
+    <Compile Include="ReportsViewModels\UserReportsViewModel.cs" />
+    <Compile Include="ReportsViewModels\UserReportViewModel.cs" />
     <Compile Include="UserViewModels\BorrowedBooks\BorrowedBooksHistoryViewModel.cs" />
     <Compile Include="UserViewModels\BorrowedBooks\BorrowedBooksViewModel.cs" />
     <Compile Include="UserViewModels\ConfirmDeleteUserViewModel.cs" />

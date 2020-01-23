@@ -11,7 +11,7 @@ namespace Common.BookViewModels
     {
         [Required]
         public int BookGenreId { get; set; }
-        [Required]
+        [Required(AllowEmptyStrings = true)]
         public string Name { get; set; }
     }
 }

@@ -1,0 +1,7 @@
+﻿@model Common.ReportsViewModels.InitialDataViewModel
+
+
+@Html.React("App", new { initialData = @Model })
+
+<script src="/Static/indexReports.js"></script>
+@Html.ReactInitJavaScript()
