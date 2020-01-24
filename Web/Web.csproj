@@ -214,13 +214,11 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="react\src\Book\components\BookDetails.js" />
+    <Content Include="react\src\Book\components\BookDetails.jsx" />
     <Content Include="react\src\Book\components\BookDialog.js" />
-    <Content Include="react\src\Book\components\BookRow.js" />
-    <Content Include="react\src\Book\components\BorrowHistoryRow.js" />
-    <Content Include="react\src\Book\components\BorrowRow.js" />
-    <Content Include="react\src\Book\components\BorrowsHistoryTable.js" />
-    <Content Include="react\src\Book\components\BorrowsTable.js" />
+    <Content Include="react\src\Book\components\BookRow.jsx" />
+    <Content Include="react\src\Book\components\BorrowsHistoryTable.jsx" />
+    <Content Include="react\src\Book\components\BorrowsTable.jsx" />
     <Content Include="react\src\Book\components\Breadcrumb.js" />
     <Content Include="react\src\Book\components\DateField.js" />
     <Content Include="react\src\Book\components\InputField.js" />
@@ -236,12 +234,9 @@
     <Content Include="react\src\Shared\components\Inputs\InputField.js" />
     <Content Include="react\src\Shared\components\Inputs\SelectField.js" />
     <Content Include="react\src\Borrow\components\BorrowDialog.js" />
-    <Content Include="react\src\Borrow\components\BorrowerDetailsRow.js" />
-    <Content Include="react\src\Borrow\components\BorrowerRow.js" />
-    <Content Include="react\src\Borrow\components\BorrowedBookRow.js" />
-    <Content Include="react\src\Borrow\components\BorrowerDetails.js" />
-    <Content Include="react\src\Borrow\components\BorrowersTable.js" />
-    <Content Include="react\src\Borrow\components\BorrowedBooksTable.js" />
+    <Content Include="react\src\Borrow\components\BorrowerDetails.jsx" />
+    <Content Include="react\src\Borrow\components\BorrowersTable.jsx" />
+    <Content Include="react\src\Borrow\components\BorrowedBooksTable.jsx" />
     <Content Include="react\src\Borrow\components\Borrows.js" />
     <Content Include="react\src\Borrow\services\BorrowService.js" />
     <Content Include="react\src\Shared\components\Breadcrumb.js" />
@@ -251,12 +246,7 @@
     <Content Include=".babelrc" />
     <Content Include="package.json" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
-    <Content Include="Static\BookDialog.js" />
-    <Content Include="Static\indexBorrow.js" />
-    <Content Include="Static\indexReports.js" />
-    <Content Include="Static\vendors~BookDialog.js" />
     <Content Include="webpack.config.js" />
-    <Content Include="Static\indexBook.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.js" />
@@ -267,8 +257,8 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="react\src\Book\components\Books.js" />
-    <Content Include="react\src\Book\components\BooksTable.js" />
+    <Content Include="react\src\Book\components\Books.jsx" />
+    <Content Include="react\src\Book\components\BooksTable.jsx" />
     <Content Include="react\src\Book\index.js" />
     <Content Include="react\src\Shared\services\BaseService.js" />
     <Content Include="react\src\Book\services\BookService.js" />
@@ -301,6 +291,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Static\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

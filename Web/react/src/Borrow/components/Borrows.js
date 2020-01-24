@@ -5,8 +5,8 @@ import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 
-import BorrowedBooksTable from './BorrowedBooksTable.js';
-import BorrowersTable from './BorrowersTable.js';
+import BorrowedBooksTable from './BorrowedBooksTable.jsx';
+import BorrowersTable from './BorrowersTable.jsx';
 
 const styles = theme => ({
     root: {
