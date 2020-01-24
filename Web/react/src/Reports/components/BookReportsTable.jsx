@@ -1,30 +1,21 @@
 ﻿import React, { Component } from "react";
-import MaterialTable, { MTableFilterRow } from 'material-table'
+import MaterialTable, { MTableToolbar } from 'material-table'
 import ReportsService from './../services/ReportsService.jsx';
-import BookReportsFilter from "./BookReportsFilter.jsx";
 
 class BookReportsTable extends React.Component {
     constructor(props) {
         super(props);
         this.reportsService = new ReportsService();
-
+        this.tableRef = React.createRef();
         this.state = { initial: true };
     }
 
-    createFilterProps(filters) {
-        const props = {
-            BookGenre: { BookGenreId: -1, Name: "" },
-            Title: ""
-        };
+    shouldComponentUpdate(nextProps, nextState) {
+        if (this.props.filter !== nextProps.filter) {
+            this.tableRef.current && this.tableRef.current.onQueryChange();
+        }
 
-        filters.forEach(f => {
-            if (f.value === null)
-                return;
-
-            props[f.column.field] = f.value;
-        });
-
-        return props;
+        return true;
     }
 
     getData(q) {
@@ -39,7 +30,7 @@ class BookReportsTable extends React.Component {
             }
 
             const vm = {
-                ...this.createFilterProps(q.filters),
+                ...this.props.filter,
                 Page: q.page,
                 Size: q.pageSize
             }
@@ -60,27 +51,22 @@ class BookReportsTable extends React.Component {
 
         return (
             <MaterialTable
+                tableRef={this.tableRef}
                 columns={[
-                    { title: 'Author', field: 'Author', filtering: false },
+                    { title: 'Author', field: 'Author' },
                     {
                         title: 'Title', field: 'Title', defaultFilter: ''
                     },
-                    { title: 'ReleaseDate', field: 'ReleaseDate', type: 'date', filtering: false },
-                    { title: 'ISBN', field: 'ISBN', filtering: false },
-                    { title: 'Genre', field: 'BookGenre', filtering: false },
-                    { title: 'BorrowCount', field: 'BorrowCount', type: 'numeric', filtering: false }
+                    { title: 'ReleaseDate', field: 'ReleaseDate', type: 'date' },
+                    { title: 'ISBN', field: 'ISBN' },
+                    { title: 'Genre', field: 'BookGenre' },
+                    { title: 'BorrowCount', field: 'BorrowCount', type: 'numeric' }
                 ]}
                 title="Top books"
                 data={(q) => this.getData(q)}
                 options={{
-                    filtering: true,
                     search: false,
                     debounceInterval: 600
-                }}
-                components={{
-                    FilterRow: props => {
-                        return (<BookReportsFilter{...props} />);
-                    }
                 }}
             />
         );

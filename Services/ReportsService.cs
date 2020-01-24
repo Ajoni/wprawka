@@ -31,14 +31,15 @@ namespace Services
         {
             var bookIds = await _context.Book.AsNoTracking()
                 .Where(b => (getTopBooks.Title == null || b.Title.Contains(getTopBooks.Title))
-                && (getTopBooks.BookGenre.BookGenreId <= 0 || b.BookGenreId == getTopBooks.BookGenre.BookGenreId)
-                )
+                && (getTopBooks.BookGenreId <= 0 || b.BookGenreId == getTopBooks.BookGenreId))
                 .Select(b => b.BookId)
                 .ToListAsync();
 
             var books = bookIds
-                .GroupJoin(_context.Borrow.AsNoTracking(), id => id, borrow => borrow.BookId, (id, borrows) =>
-                      new { BookId = id, BorrowCount = borrows.DefaultIfEmpty().Count() })
+                .GroupJoin(_context.Borrow.AsNoTracking()
+                        .Where(b => b.FromDate >= getTopBooks.FromDate && b.FromDate <= getTopBooks.ToDate),
+                         id => id, borrow => borrow.BookId, (id, borrows) =>
+                      new { BookId = id, BorrowCount = borrows.Count() })
                 .OrderByDescending(x => x.BorrowCount).Skip(getTopBooks.Page * getTopBooks.Size).Take(getTopBooks.Size)
                 .Join(_context.Book, x => x.BookId, b => b.BookId, (x, book) => new { x.BorrowCount, Book = book })
                 .ToList();
@@ -60,7 +61,7 @@ namespace Services
 
             var users = userIds
             .GroupJoin(_context.Borrow.AsNoTracking(), id => id, b => b.UserId, (id, borrows) =>
-                     new { UserId = id, BorrowCount = borrows.DefaultIfEmpty().Count() })
+                     new { UserId = id, BorrowCount = borrows.Count() })
             .OrderByDescending(x => x.BorrowCount).Skip(getTopUsers.Page * getTopUsers.Size).Take(getTopUsers.Size)
             .Join(_context.User, x => x.UserId, b => b.UserId, (x, user) => new { x.BorrowCount, User = user })
             .ToList();

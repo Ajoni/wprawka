@@ -19,6 +19,14 @@ namespace Common.ReportsViewModels.Requests
         [Required(AllowEmptyStrings = true)]
         public string Title { get; set; }
         [Required]
-        public DictBookGenreViewModel BookGenre { get; set; }
+        public int BookGenreId { get; set; }
+        [Required]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime FromDate { get; set; }
+        [Required]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime ToDate { get; set; }
     }
 }

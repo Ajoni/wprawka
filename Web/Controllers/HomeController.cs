@@ -45,8 +45,16 @@ namespace Web.Controllers
         public async Task<ActionResult> Reports()
         {
             var vm = new InitialDataViewModel();
-            vm.BookReports = await _reportsService.GetTopBooks(new GetTopBooks{Size = 5,Page = 0, Title = "",BookGenre = new DictBookGenreViewModel()});
-            vm.UserReports = await _reportsService.GetTopUsers(new GetTopUsers{Size = 5,Page = 0,FilterLastName = ""});
+            vm.BookReports = await _reportsService.GetTopBooks(new GetTopBooks
+            {
+                Size = 5,
+                Page = 0,
+                Title = "",
+                BookGenreId = -1,
+                FromDate = DateTime.MinValue,
+                ToDate = DateTime.MaxValue
+            });
+            vm.UserReports = await _reportsService.GetTopUsers(new GetTopUsers { Size = 5, Page = 0, FilterLastName = "" });
             return View(vm);
         }
     }
