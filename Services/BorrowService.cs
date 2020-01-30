@@ -8,7 +8,6 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Common.BorrowViewModels;
 using DAL;
-using DAL.Entities;
 
 namespace Services
 {

@@ -26,7 +26,7 @@ class BooksTable extends React.Component {
                 { title: 'Count', field: 'Count', type: 'numeric' },
                 { title: 'AddDate', field: 'AddDate', type: 'date' },
                 { title: 'ModifiedDate', field: 'ModifiedDate', type: 'date' },
-                { title: 'Genre', field: 'BookGenre.Name' },
+                { title: 'Genre', field: 'Genre' },
             ];
 
         if (this.props.showButtons)

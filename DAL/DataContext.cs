@@ -5,7 +5,6 @@ using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DAL.Entities;
 
 namespace DAL
 {
@@ -26,6 +25,8 @@ namespace DAL
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+
+            modelBuilder.Entity<DictBookGenre>().HasKey(genre => genre.BookGenreId);
         }
     }
 }

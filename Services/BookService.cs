@@ -8,7 +8,6 @@ using AutoMapper;
 using Common.BookViewModels;
 using Common.BookViewModels.BorrowedBooks;
 using DAL;
-using DAL.Entities;
 
 namespace Services
 {
@@ -19,8 +18,6 @@ namespace Services
         Task<List<DictBookGenreViewModel>> GetBookGenresAsync();
         Task<List<BookViewModel>> GetBooksAsync();
         Task<BookDetailsViewModel> GetBookDetailsAsync(int? bookId);
-        Task<List<BorrowedBooksViewModel>> GetBorrowedBooks(int? bookId);
-        Task<List<BorrowedBooksHistoryViewModel>> GetBorrowedHistoryBooks(int? bookId);
     }
     public class BookService : IBookService
     {
@@ -40,7 +37,7 @@ namespace Services
             _context.Book.Add(book);
             await _context.SaveChangesAsync();
 
-            book.BookGenre = await _context.DictBookGenre.AsNoTracking()
+            book.DictBookGenre = await _context.DictBookGenre.AsNoTracking()
                 .SingleOrDefaultAsync(g => g.BookGenreId == book.BookGenreId);
             return _mapper.Map(book, viewModel);
         }
@@ -68,7 +65,7 @@ namespace Services
 
         public async Task<List<BookViewModel>> GetBooksAsync()
         {
-            var books = await _context.Book.AsNoTracking().ToListAsync();
+            var books = await _context.Book.Include(x=>x.DictBookGenre).AsNoTracking().ToListAsync();
             return _mapper.Map<List<BookViewModel>>(books);
         }
 
@@ -88,7 +85,7 @@ namespace Services
             return result;
         }
 
-        public async Task<List<BorrowedBooksViewModel>> GetBorrowedBooks(int? bookId)
+        private async Task<List<BorrowedBooksViewModel>> GetBorrowedBooks(int? bookId)
         {
             if (!_context.Book.Any(u => u.BookId == bookId))
                 throw new ArgumentOutOfRangeException($"No book with id: {bookId}");
@@ -106,7 +103,7 @@ namespace Services
             return books;
         }
 
-        public async Task<List<BorrowedBooksHistoryViewModel>> GetBorrowedHistoryBooks(int? bookId)
+        private async Task<List<BorrowedBooksHistoryViewModel>> GetBorrowedHistoryBooks(int? bookId)
         {
             if (!_context.Book.Any(u => u.BookId == bookId))
                 throw new ArgumentOutOfRangeException($"No book with id: {bookId}");

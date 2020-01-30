@@ -10,7 +10,6 @@ using Common;
 using Common.UserViewModels;
 using Common.UserViewModels.BorrowedBooks;
 using DAL;
-using DAL.Entities;
 
 namespace Services
 {
@@ -121,7 +120,7 @@ namespace Services
                 {
                     Title = b.Book.Title,
                     Author = b.Book.Author,
-                    Genre = b.Book.BookGenre.Name,
+                    Genre = b.Book.DictBookGenre.Name,
                     ISBN = b.Book.ISBN,
                     ReleaseDate = b.Book.ReleaseDate,
                 }).ToListAsync();
@@ -141,7 +140,7 @@ namespace Services
                     ToDate = b.ToDate,
                     Title = b.Book.Title,
                     Author = b.Book.Author,
-                    Genre = b.Book.BookGenre.Name,
+                    Genre = b.Book.DictBookGenre.Name,
                     ISBN = b.Book.ISBN,
                     ReleaseDate = b.Book.ReleaseDate,
                 }).ToListAsync();

@@ -4,7 +4,6 @@ using Autofac.Integration.Mvc;
 using AutoMapper;
 using Common.UserViewModels;
 using DAL;
-using DAL.Entities;
 using Services;
 using System.Linq;
 using System.Reflection;
@@ -57,7 +56,7 @@ namespace Web
                 cfg.CreateMap<User, UserCreateUpdateViewModel>().ReverseMap();
                 cfg.CreateMap<User, UserIndexViewModel>()
                     .ForMember(vm => vm.BooksBorrowed,
-                        o => o.MapFrom(u => u.BorrowedBooks.Count(b => !b.IsReturned)))
+                        o => o.MapFrom(u => u.Borrows.Count(b => !b.IsReturned)))
                     .ForMember(vm => vm.UserName,
                         o => o.MapFrom(u => u.FirstName + " " + u.LastName));
                 cfg.CreateMap<User, UserDetailsViewModel>()
@@ -65,11 +64,13 @@ namespace Web
                     .ForMember(vm => vm.BorrowedBooksHistoryViewModel, o => o.Ignore());
                 cfg.CreateMap<User, UserDeleteViewModel>()
                     .ForMember(vm => vm.HasBooks,
-                        o => o.MapFrom(u => u.BorrowedBooks.Count(b => !b.IsReturned) != 0));
+                        o => o.MapFrom(u => u.Borrows.Count(b => !b.IsReturned) != 0));
 
-                cfg.CreateMap<Book, BookViewModel>().ReverseMap()
-                    .ForMember(b => b.BookGenre, o => o.Ignore())
-                    ;
+                cfg.CreateMap<Book, BookViewModel>()
+                    .ForMember(b => b.BookGenreId, o => o.MapFrom(b=>b.DictBookGenre.BookGenreId))
+                    .ForMember(b => b.Genre, o => o.MapFrom(b=>b.DictBookGenre.Name))
+                    .ReverseMap()
+                    .ForMember(b => b.DictBookGenre, o => o.Ignore());
                 cfg.CreateMap<DictBookGenre, DictBookGenreViewModel>().ReverseMap();
 
                 cfg.CreateMap<Borrow, BorrowedBookViewModel>()
@@ -82,24 +83,24 @@ namespace Web
                     .ForMember(vm => vm.UserName, o => o.MapFrom(u => u.FirstName + " " + u.LastName))
                     .ForMember(vm => vm.Email, o => o.MapFrom(u => u.Email))
                     .ForMember(vm => vm.Phone, o => o.MapFrom(u => u.Phone))
-                    .ForMember(vm => vm.AmountBorrowed, o => o.MapFrom(u => u.BorrowedBooks.Count(b => !b.IsReturned)));
+                    .ForMember(vm => vm.AmountBorrowed, o => o.MapFrom(u => u.Borrows.Count(b => !b.IsReturned)));
                 cfg.CreateMap<Borrow, BorrowViewModel>()
                     .ForMember(vm => vm.Author, o => o.MapFrom(u => u.Book.Author))
                     .ForMember(vm => vm.Title, o => o.MapFrom(u => u.Book.Title))
-                    .ForMember(vm => vm.Genre, o => o.MapFrom(u => u.Book.BookGenre.Name));
+                    .ForMember(vm => vm.Genre, o => o.MapFrom(u => u.Book.DictBookGenre.Name));
                 cfg.CreateMap<Book, AvailableBookViewModel>();
                 cfg.CreateMap<User, BorrowUserViewModel>()
                     .ForMember(vm => vm.UserName, o => o.MapFrom(u => u.FirstName + " " + u.LastName));
 
                 cfg.CreateMap<Book, BookReportViewModel>()
                     .ForMember(vm => vm.BorrowCount, o => o.Ignore())
-                    .ForMember(vm => vm.BookGenre, o => o.MapFrom(x => x.BookGenre.Name))
-                    .ForMember(vm => vm.BookGenreId, o => o.MapFrom(x => x.BookGenre.BookGenreId));
+                    .ForMember(vm => vm.BookGenre, o => o.MapFrom(x => x.DictBookGenre.Name))
+                    .ForMember(vm => vm.BookGenreId, o => o.MapFrom(x => x.DictBookGenre.BookGenreId));
                 cfg.CreateMap<Tuple<int, Book>, BookReportViewModel>()
                     .IncludeMembers(x => x.Item2)
                     .ForMember(vm => vm.BorrowCount, o => o.MapFrom(x => x.Item1))
-                    .ForMember(vm => vm.BookGenre, o => o.MapFrom(x => x.Item2.BookGenre.Name))
-                    .ForMember(vm => vm.BookGenreId, o => o.MapFrom(x => x.Item2.BookGenre.BookGenreId));
+                    .ForMember(vm => vm.BookGenre, o => o.MapFrom(x => x.Item2.DictBookGenre.Name))
+                    .ForMember(vm => vm.BookGenreId, o => o.MapFrom(x => x.Item2.DictBookGenre.BookGenreId));
                 cfg.CreateMap<User, UserReportViewModel>()
                     .ForMember(vm => vm.BorrowCount, o => o.Ignore());
                 cfg.CreateMap<Tuple<int, User>, UserReportViewModel>()

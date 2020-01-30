@@ -8,7 +8,6 @@ using AutoMapper;
 using Common.ReportsViewModels;
 using Common.ReportsViewModels.Requests;
 using DAL;
-using DAL.Entities;
 
 namespace Services
 {

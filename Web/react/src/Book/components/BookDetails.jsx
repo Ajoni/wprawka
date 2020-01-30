@@ -16,8 +16,8 @@ export default function BookDetails(props) {
         async function getDetails() {
             const result = await bookService.getBookDetails(props.match.params.id);
             setBook([result.Book]);
-            setBorrows(result.BorrowedBooks);
-            setBorrowsHistory(result.BorrowedBooksHistory);
+            setBorrows(result.Borrow);
+            setBorrowsHistory(result.BorrowHistory);
         }
         getDetails();
     }, []);

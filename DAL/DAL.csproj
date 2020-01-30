@@ -40,6 +40,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,26 +50,61 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataContext.cs" />
-    <Compile Include="Entities\Book.cs" />
-    <Compile Include="Entities\Borrow.cs" />
-    <Compile Include="Entities\DictBookGenre.cs" />
-    <Compile Include="Entities\User.cs" />
-    <Compile Include="Migrations\202001110926028_init.cs" />
-    <Compile Include="Migrations\202001110926028_init.Designer.cs">
-      <DependentUpon>202001110926028_init.cs</DependentUpon>
+    <Compile Include="Book.cs">
+      <DependentUpon>spyrosoftModels.tt</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Borrow.cs">
+      <DependentUpon>spyrosoftModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataContext.cs" />
+    <Compile Include="DictBookGenre.cs">
+      <DependentUpon>spyrosoftModels.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="spyrosoftModels.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>spyrosoftModels.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spyrosoftModels.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>spyrosoftModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="spyrosoftModels.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>spyrosoftModels.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="User.cs">
+      <DependentUpon>spyrosoftModels.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <EntityDeploy Include="spyrosoftModels.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>spyrosoftModels.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="spyrosoftModels.edmx.diagram">
+      <DependentUpon>spyrosoftModels.edmx</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202001110926028_init.resx">
-      <DependentUpon>202001110926028_init.cs</DependentUpon>
-    </EmbeddedResource>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="spyrosoftModels.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>spyrosoftModels.edmx</DependentUpon>
+      <LastGenOutput>spyrosoftModels.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="spyrosoftModels.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>spyrosoftModels.edmx</DependentUpon>
+      <LastGenOutput>spyrosoftModels.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

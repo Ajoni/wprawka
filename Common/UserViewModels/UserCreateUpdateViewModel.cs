@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using DAL.Entities;
 
 namespace Common.UserViewModels
 {

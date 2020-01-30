@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DAL.Entities;
+using DAL;
+
 
 namespace Common.BookViewModels
 {
@@ -27,6 +24,6 @@ namespace Common.BookViewModels
         [Required]
         [Range(0, int.MaxValue, ErrorMessage = "Please enter a non negative integer Number")]
         public int BookGenreId { get; set; }
-        public DictBookGenre BookGenre { get; set; }
+        public string Genre { get; set; }
     }
 }
