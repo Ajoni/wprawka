@@ -1,4 +1,4 @@
-﻿import BaseService from './BaseService.js';
+﻿import BaseService from './../../Shared/services/BaseService.js';
 
 
 export default class BookService extends BaseService {

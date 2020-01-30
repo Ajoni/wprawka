@@ -22,10 +22,7 @@ export default function DateField(props) {
                     disableToolbar variant="inline" margin="normal" fullWidth
                     format="dd/MM/yyyy" id={props.id} label={props.label}
                     value={props.value} onChange={props.onChange}
-                    KeyboardButtonProps={{
-                        'aria-label': 'change date',
-                    }}
-                    required={props.required}
+                    KeyboardButtonProps={{ 'aria-label': 'change date' }}
                     error={hasError}
                     helperText={hasError ? errorMsg : ''}
                 />

@@ -6,14 +6,20 @@ import { Link } from "react-router-dom";
 class BooksTable extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { BookDialog: null, Edit: false };
+
+        this.state = { BookDialog: null, BookToEdit: null };
     }
 
-    showEditModal = () => {
-        import(/* webpackChunkName: "BookDialog" */'./BookDialog').then(module => {
-            this.setState({ BookDialog: module.default, Edit: true });
+    showEditModal = (id) => {
+        import(/* webpackChunkName: "BookDialog" */'./BookDialog.jsx').then(module => {
+            const BookToEdit = this.props.rows.find(r => r.BookId === id);
+            this.setState({ BookDialog: module.default, BookToEdit });
         });
     };
+
+    onModalClose() {
+        this.setState({ BookToEdit: null });
+    }
 
     render() {
         let { BookDialog } = this.state;
@@ -33,11 +39,7 @@ class BooksTable extends React.Component {
             columns.push({
                 title: 'Actions', field: 'BookId',
                 render: row => <div>
-                    {BookDialog
-                        ? <BookDialog book={row} title="Update" submitText="Update"
-                            open={this.state.Edit} onClose={() => this.setState({ Edit: false })} />
-                        : null}
-                    <Button variant="contained" color="default" onClick={() => this.showEditModal()}>Edit</Button>
+                    <Button variant="contained" color="default" onClick={() => this.showEditModal(row.BookId)}>Edit</Button>
                     <Link color="textPrimary" aria-current="page"
                         to={`/Home/Books/${row.BookId}`}>
                         <Button variant="contained" color="default">Details</Button>
@@ -48,16 +50,24 @@ class BooksTable extends React.Component {
         const options = { search: false };
         if (this.props.pageSize)
             options['pageSize'] = this.props.pageSize;
-        if (this.props.paging)
-            options['paging'] = this.props.paging;
+        if (this.props.pageSizeOptions)
+            options['pageSizeOptions'] = this.props.pageSizeOptions;
 
         return (
-            <MaterialTable
-                columns={columns}
-                title={this.props.title ? this.props.title : "Books"}
-                data={this.props.rows}
-                options={options}
-            />
+            <div>
+                {BookDialog
+                    ? <BookDialog book={this.state.BookToEdit} title="Update" submitText="Update"
+                        bookGenres={this.props.bookGenres}
+                        onSubmit={(book, oldBook)=>this.props.onBookDialogSubmit(book,oldBook)}
+                        open={this.state.BookToEdit !== null} onClose={() => this.onModalClose()} />
+                    : null}
+                <MaterialTable
+                    columns={columns}
+                    title={this.props.title ? this.props.title : "Books"}
+                    data={this.props.rows}
+                    options={options}
+                />
+            </div>
         );
     }
 }

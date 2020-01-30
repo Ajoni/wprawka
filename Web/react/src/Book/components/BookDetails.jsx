@@ -16,15 +16,15 @@ export default function BookDetails(props) {
         async function getDetails() {
             const result = await bookService.getBookDetails(props.match.params.id);
             setBook([result.Book]);
-            setBorrows(result.Borrow);
-            setBorrowsHistory(result.BorrowHistory);
+            setBorrows(result.BorrowedBooks);
+            setBorrowsHistory(result.BorrowedBooksHistory);
         }
         getDetails();
     }, []);
 
     return (
         <div>
-            <BooksTable rows={Book} pageSize={1} paging={false} title="Selected book"/>
+            <BooksTable rows={Book} pageSize={1} pageSizeOptions={[]} title="Selected book"/>
             <BorrowsTable rows={Borrows} />
             <BorrowsHistoryTable rows={BorrowsHistory} />
         </div>

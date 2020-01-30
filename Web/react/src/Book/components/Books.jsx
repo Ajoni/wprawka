@@ -18,6 +18,24 @@ class Books extends React.Component {
                     books: res
                 });
             });
+        this.bookService.getBookGenres()
+            .then(res => {
+                this.setState({
+                    genres: res.map(item => ({ id: item.BookGenreId, display: item.Name }))
+                });
+            });
+    }
+
+    onBookDialogSubmit(book, oldBook) {
+        const index = this.state.books.indexOf(oldBook);
+        const books = [...this.state.books];
+
+        if (index !== -1)
+            books[index] = book;
+        else
+            books.push(book);
+
+        this.setState({ books });
     }
 
     render() {
@@ -25,17 +43,17 @@ class Books extends React.Component {
         return (
             <div>
                 {BookDialog ? <BookDialog open={this.state.isAdding} title="Add a book" submitText="Add"
-                    onClose={() => this.setState({ isAdding: false })}
-                    onSubmit={(book) => this.setState({ books: [...this.state.books, book] })}
+                    onClose={() => this.setState({ isAdding: false })} bookGenres={this.state.genres}
+                    onSubmit={(book)=>this.onBookDialogSubmit(book)}
                 /> : null}
                 <Button variant="contained" color="default" onClick={() => this.showAddModal()}>Add new</Button>
-                <BooksTable rows={this.state.books} showButtons={true}/>
+                <BooksTable rows={this.state.books} showButtons={true} bookGenres={this.state.genres} onBookDialogSubmit={this.onBookDialogSubmit.bind(this)}/>
             </div >
         );
     }
 
     showAddModal() {
-        import(/* webpackChunkName: "BookDialog" */'./BookDialog').then(module => {
+        import(/* webpackChunkName: "BookDialog" */'./BookDialog.jsx').then(module => {
             this.setState({ BookDialog: module.default, isAdding: true });
         });
     }
