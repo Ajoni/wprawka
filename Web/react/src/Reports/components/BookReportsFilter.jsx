@@ -29,7 +29,7 @@ export default class BookReportsFilter extends React.Component {
         this.state = {
             Filter: {
                 Title: '',
-                BookGenreId: null,
+                BookGenreId: -1,
                 FromDate: null,
                 ToDate: null
             },
@@ -39,9 +39,9 @@ export default class BookReportsFilter extends React.Component {
                 FromDate: Date_MIN_VALUE,
                 ToDate: Date_MAX_VALUE
             },
-            BookGenres: []
+            BookGenres: [],
+            BookGenre:''
         }
-        this.whyWontItClearInputOnReset = React.createRef();
         this.onFilterChanged = debounce(this.props.onFilterChanged, 500);
     }
 
@@ -75,12 +75,13 @@ export default class BookReportsFilter extends React.Component {
         this.setState({
             Filter: {
                 Title: '',
-                BookGenreId: null,
+                BookGenreId: -1,
                 FromDate: null,
                 ToDate: null
             },
-            BookGenre: null
+            BookGenre: ''
         });
+        this.onFilterChanged(this.state.DefaultFilter);
     }
 
     render() {
@@ -92,8 +93,9 @@ export default class BookReportsFilter extends React.Component {
                             <TextField value={this.state.Filter.Title} label="Title" name="Title" type="search" onChange={e => this.handleChange(e.target.name, e.target.value)} />
                         </Grid>
                         <Grid item xs={4}>
-                            <Autocomplete ref={this.whyWontItClearInputOnReset}
+                            <Autocomplete
                                 name="BookGenreId"
+                                disableClearable={true}
                                 value={this.state.BookGenre}
                                 getOptionSelected={(option, value) => {
                                     return option.BookGenreId === value.BookGenreId;
@@ -103,7 +105,7 @@ export default class BookReportsFilter extends React.Component {
                                     this.setState({ BookGenre: value });
                                 }}
                                 options={this.state.BookGenres}
-                                getOptionLabel={g => g.Name}
+                                getOptionLabel={g => g === '' ? '' : g.Name}
                                 renderInput={params => {
                                     return (
                                         <TextField {...params} label="Genre" fullWidth />
