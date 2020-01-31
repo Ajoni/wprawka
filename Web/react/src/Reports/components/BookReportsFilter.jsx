@@ -40,7 +40,7 @@ export default class BookReportsFilter extends React.Component {
                 ToDate: Date_MAX_VALUE
             },
             BookGenres: [],
-            BookGenre:''
+            BookGenre: ''
         }
         this.onFilterChanged = debounce(this.props.onFilterChanged, 500);
     }
@@ -57,7 +57,7 @@ export default class BookReportsFilter extends React.Component {
             .then(res => this.setState({ BookGenres: res }));
     }
 
-    handleChange(name, value) {
+    filterChange(name, value) {
         const Filter = { ...this.state.Filter };
         Filter[name] = value;
         this.setState({ Filter });
@@ -67,8 +67,22 @@ export default class BookReportsFilter extends React.Component {
             if (filter[key] === null)
                 filter[key] = this.state.DefaultFilter[key];
         });
+        return filter;
+    }
 
-        this.onFilterChanged(filter);
+    titleChange(value) {
+        this.onFilterChanged(this.filterChange('Title', value));
+    }
+    genreChange(value) {
+        this.onFilterChanged(this.filterChange('BookGenreId', value));
+    }
+    fromDateChange(value) {
+        if (!isNaN(value.valueOf()))
+            this.onFilterChanged(this.filterChange('FromDate', value));
+    }
+    toDateChange(value) {
+        if (!isNaN(value.valueOf()))
+            this.onFilterChanged(this.filterChange('ToDate', value));
     }
 
     reset() {
@@ -90,7 +104,7 @@ export default class BookReportsFilter extends React.Component {
                 <Grid container spacing={1}>
                     <Grid container item xs={12} spacing={3}>
                         <Grid item xs={4}>
-                            <TextField value={this.state.Filter.Title} label="Title" name="Title" type="search" onChange={e => this.handleChange(e.target.name, e.target.value)} />
+                            <TextField value={this.state.Filter.Title} label="Title" name="Title" type="search" onChange={e => this.titleChange(e.target.value)} />
                         </Grid>
                         <Grid item xs={4}>
                             <Autocomplete
@@ -101,7 +115,7 @@ export default class BookReportsFilter extends React.Component {
                                     return option.BookGenreId === value.BookGenreId;
                                 }}
                                 onChange={(e, value) => {
-                                    this.handleChange("BookGenreId", value.BookGenreId);
+                                    this.genreChange(value.BookGenreId);
                                     this.setState({ BookGenre: value });
                                 }}
                                 options={this.state.BookGenres}
@@ -117,11 +131,11 @@ export default class BookReportsFilter extends React.Component {
                     <Grid container item xs={12} spacing={3}>
                         <Grid item xs={4}>
                             <DateField id="FromDate" label="FromDate" name="FromDate"
-                                value={this.state.Filter.FromDate} onChange={date => this.handleChange("FromDate", date)} />
+                                value={this.state.Filter.FromDate} onChange={date => this.fromDateChange(date)} />
                         </Grid>
                         <Grid item xs={4}>
                             <DateField id="ToDate" label="ToDate" name="ToDate"
-                                value={this.state.Filter.ToDate} onChange={date => this.handleChange("ToDate", date)} />
+                                value={this.state.Filter.ToDate} onChange={date => this.toDateChange(date)} />
                         </Grid>
                     </Grid>
                     <Grid container item xs={12} spacing={3}>
