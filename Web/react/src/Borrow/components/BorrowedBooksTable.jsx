@@ -2,43 +2,21 @@
 import MaterialTable from 'material-table'
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
-import BorrowDialog from './BorrowDialog';
+import BorrowDialog from './BorrowDialog.jsx';
 import BorrowService from './../services/BorrowService';
 
 class BorrowedBooksTable extends React.Component {
     constructor(props) {
         super(props);
         this.borrowService = new BorrowService();
-        this.state = { borrowedBooks: [], BorrowDialog: null, isBorrowing: false };
+        this.state = { BorrowDialog: null, isBorrowing: false };
     }
 
-    componentDidMount() {
-        this.borrowService.getBorrowedBooks()
-            .then(res => {
-                this.setState({
-                    borrowedBooks: res
-                });
-            });
-    }
-    removeBorrow(id) {
-        const borrowedBooks = this.state.borrowedBooks.filter(b => b.BorrowId !== id);
-        this.setState({
-            borrowedBooks
-        });
-    }
-    returnBook(book) {
-        this.borrowService.returnBooks([{
-            UserId: book.UserId,
-            BookId: book.BookId,
-            BorrowId: book.BorrowId
-        }]);
-        this.removeBorrow(book.BorrowId);
-    }
     render() {
         return (
             <Paper>
                 <BorrowDialog open={this.state.isBorrowing} title="Borrow" onClose={() => this.setState({ isBorrowing: false })}
-                />
+                    onSubmit={(borrowVM) => this.props.onBorrowSubmit(borrowVM)} />
                 <MaterialTable
                     columns={[
                         { title: 'Author', field: 'Author' },
@@ -49,11 +27,11 @@ class BorrowedBooksTable extends React.Component {
                         { title: 'FromDate', field: 'FromDate', type: 'date' },
                         {
                             title: 'Actions', field: 'BookId',
-                            render: rowData => <Button variant="contained" color="default" onClick={() => this.returnBook(rowData)}>Return</Button>
+                            render: rowData => <Button variant="contained" color="default" onClick={() => this.props.returnBook(rowData)}>Return</Button>
                         }
                     ]}
                     title="Borrowed books"
-                    data={this.state.borrowedBooks}
+                    data={this.props.borrowedBooks}
                     options={{ search: false }}
                     actions={[
                         {

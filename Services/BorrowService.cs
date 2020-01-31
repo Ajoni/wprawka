@@ -18,7 +18,7 @@ namespace Services
         Task<List<BorrowerViewModel>> GetBorrowers();
         Task<List<BorrowUserViewModel>> GetUsers();
         Task<BorrowerDetailsViewModel> GetBorrowerDetails(int? userId);
-        Task BorrowBook(BorrowBookViewModel viewModel);
+        Task<BorrowBooksResponeViewModel> BorrowBook(BorrowBooksViewModel viewModel);
         Task ReturnBook(List<ReturnBookViewModel> viewModel);
     }
     public class BorrowService : IBorrowService
@@ -80,19 +80,24 @@ namespace Services
             return vm;
         }
 
-        public async Task BorrowBook(BorrowBookViewModel viewModel)
+        public async Task<BorrowBooksResponeViewModel> BorrowBook(BorrowBooksViewModel viewModel)
         {
+            var borrower = await _context.User.FindAsync(viewModel.UserId);
+            if(borrower==null)
+                throw  new InvalidOperationException($"User with id:{viewModel.UserId} does not exist");
+
             var booksToBorrow = await _context.Book
                 .Join(viewModel.BookIds, b => b.BookId, vm => vm, (book, i) => book)
                 .ToListAsync();
-
             if (booksToBorrow.Count < viewModel.BookIds.Count)
                 throw new ArgumentOutOfRangeException
                     (nameof(viewModel.BookIds), $"Some book ids are not correct. Found ids:{viewModel.BookIds.Select(b => b + ", ")}");
+
             var booksWithNoCopies = booksToBorrow.Where(b => b.Count <= 0).ToList();
             if (booksWithNoCopies.Count > 0)
                 throw new InvalidOperationException
                     ($"No copies of books with ids:{booksWithNoCopies.Select(b => b.BookId + ", ")}");
+
             var borrowed = await _context.Borrow.AsNoTracking().Where(b => !b.IsReturned && b.UserId == viewModel.UserId)
                 .Join(viewModel.BookIds, b => b.BookId, vm => vm, (borrow, i) => borrow).ToListAsync();
             if (borrowed.Count > 0)
@@ -102,25 +107,30 @@ namespace Services
             var borrowList = booksToBorrow.Select(b =>
             {
                 b.Count--;
-                b.ModifiedDate = DateTime.Now; //w sumie to nie wiem czy tego typu 'modyfikacje' uznawac ale załóżmy że tak
+                b.ModifiedDate = DateTime.Now;
                 return new Borrow
                 {
                     BookId = b.BookId,
                     UserId = viewModel.UserId,
                     FromDate = DateTime.Now,
                     ToDate = DateTime.Now.AddMonths(1),
-                    IsReturned = false
+                    IsReturned = false,
+                    Book = b,
+                    User = borrower
                 };
             }).ToList();
 
             _context.Borrow.AddRange(borrowList);
             await _context.SaveChangesAsync();
+
+            var response = new BorrowBooksResponeViewModel();
+            response.BorrowedBooks = _mapper.Map(borrowList, new List<BorrowedBookViewModel>());
+            response.Borrower = _mapper.Map(borrower, new BorrowerViewModel());
+            return response;
         }
 
         public async Task ReturnBook(List<ReturnBookViewModel> viewModel)
         {
-            //niepodoba mi sie to bardzo, myślałem zrobić stored proc i wysłać vm jak userdef typ ale zrezygnowałem żeby db nie modyfikować na tym etapie już
-            //jeżeli jest jakiś lepszy sposób to bardzo bym chciał go poznać
             var borrows = await _context.Borrow.Where(b => !b.IsReturned)
                                  .Join(viewModel.Select(model => model.BorrowId), borrow => borrow.BorrowId, model => model, (borrow, model) => borrow)
                                  .Join(viewModel.Select(model => model.BookId).Distinct(), borrow => borrow.BookId, model => model, (borrow, model) => borrow)

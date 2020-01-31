@@ -17,7 +17,8 @@ export default class BorrowService extends BaseService {
             {
                 method: 'post',
                 body
-            });
+            })
+            .then(res => res.json());
     }
 
     returnBooks(books) {

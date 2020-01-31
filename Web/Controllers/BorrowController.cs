@@ -71,12 +71,12 @@ namespace wprawka.Controllers
 
         [HttpPost]
         [Route("borrow/")]
-        public async Task<IHttpActionResult> Borrow(BorrowBookViewModel viewModel)
+        public async Task<IHttpActionResult> Borrow(BorrowBooksViewModel viewModel)
         {
             try
             {
-                await _borrowService.BorrowBook(viewModel);
-                return Ok();
+                var respone = await _borrowService.BorrowBook(viewModel);
+                return Ok(respone);
             }
             catch (ArgumentOutOfRangeException e)
             {

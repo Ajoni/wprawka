@@ -2,22 +2,10 @@
 import MaterialTable from 'material-table'
 import Button from '@material-ui/core/Button';
 import { Link } from "react-router-dom";
-import BorrowService from './../services/BorrowService';
 
 class BorrowersTable extends React.Component {
     constructor(props) {
         super(props);
-        this.borrowService = new BorrowService();
-        this.state = { borrowers: []};
-    }
-
-    componentDidMount() {
-        this.borrowService.getBorrowers()
-            .then(res => {
-                this.setState({
-                    borrowers: res
-                });
-            });
     }
 
     render() {
@@ -37,7 +25,7 @@ class BorrowersTable extends React.Component {
                     }
                 ]}
                 title="Borrowers"
-                data={this.state.borrowers}
+                data={this.props.borrowers}
                 options={{ search: false }}
             />
         );

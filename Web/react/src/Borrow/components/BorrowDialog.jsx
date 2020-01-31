@@ -19,7 +19,12 @@ export default class BorrowDialog extends React.Component {
     constructor(props) {
         super(props);
         this.borrowService = new BorrowService();
-        this.state = { users: [], availableBooks: [], selected: [], selectedUserId: null };
+        this.state = {
+            users: [],
+            availableBooks: [],
+            selected: [],
+            selectedUserId: ''
+        };
     }
 
     componentDidMount() {
@@ -29,7 +34,7 @@ export default class BorrowDialog extends React.Component {
     }
 
     clearForm = () => {
-        this.setState({ availableBooks: [], selected: [], selectedUserId: null });
+        this.setState({ availableBooks: [], selected: [], selectedUserId: '' });
     };
     handleClose = () => {
         if (this.props.onClose)
@@ -41,10 +46,12 @@ export default class BorrowDialog extends React.Component {
             BookIds: this.state.selected.map(s => (s.id)),
             UserId: this.state.selectedUserId
         };
-        const response = await this.borrowService.borrowBooks(borrowVM);
+        const res = await this.borrowService.borrowBooks(borrowVM);
 
         if (this.props.onClose)
             this.props.onClose();
+        if (this.props.onSubmit)
+            this.props.onSubmit(res);
         this.clearForm();
     };
 
@@ -59,7 +66,7 @@ export default class BorrowDialog extends React.Component {
         this.setState({
             selectedUserId,
             availableBooks,
-            selected: [null]
+            selected: ['']
         });
     }
 
@@ -86,7 +93,7 @@ export default class BorrowDialog extends React.Component {
 
     addNextBook() {
         var selected = [...this.state.selected];
-        selected.push(null);
+        selected.push('');
         this.setState({
             selected
         });
@@ -94,7 +101,9 @@ export default class BorrowDialog extends React.Component {
 
     removeBook(index) {
         const selected = [...this.state.selected];
-        selected.splice(index);
+        if (selected[index] !== '')
+            selected[index].isChosen = false;
+        selected.splice(index, 1);
 
         this.setState({
             selected
@@ -105,7 +114,7 @@ export default class BorrowDialog extends React.Component {
         const selects =
             this.state.selected.map((item, i) => {
                 return (
-                    <Grid container alignItems="flex-start" justify="flex-end" direction="row">
+                    <Grid key={i} container alignItems="flex-start" justify="flex-end" direction="row">
                         <FormControl fullWidth>
                             <InputLabel id={`Book${i}`}>
                                 {`Book${i + 1}`}
@@ -130,7 +139,7 @@ export default class BorrowDialog extends React.Component {
 
     render() {
         const canAdd = this.state.availableBooks.length > this.state.selected.length;
-        const canSubmit = this.state.selected.length > 0 && this.state.selected.filter(s => s === null).length === 0;
+        const canSubmit = this.state.selected.length > 0 && this.state.selected.filter(s => s === '').length === 0;
         return (
             <div>
                 <Dialog open={this.props.open} onClose={this.handleClose} aria-labelledby="form-dialog-title" disableBackdropClick={true} disableEscapeKeyDown={true} >
